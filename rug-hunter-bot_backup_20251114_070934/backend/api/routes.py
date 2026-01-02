@@ -54,6 +54,17 @@ async def get_latest_detection():
         return {"message": "No detections yet"}
     return recent_detections[-1]
 
+@router.post("/api/trade/execute")
+async def execute_trade(trade_data: dict):
+    """Exécute un trade manuel"""
+    # Votre logique de trading
+    return {"success": True, "message": "Trade exécuté"}
+
+@router.get("/api/statistics")
+async def get_statistics():
+    """Retourne les stats complètes"""
+    return app_state.statistics
+    
 @router.get("/api/positions/active")
 async def get_active_positions():
     return {"positions": []}
