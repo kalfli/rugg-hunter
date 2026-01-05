@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 RUG HUNTER BOT v5.0 - Dashboard avec Liens Directs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #141830;
+            --bg-hover: #1a1f3a;
+            --accent-cyan: #00d4ff;
+            --accent-green: #00ff88;
+            --accent-red: #ff4757;
+            --accent-yellow: #ffd93d;
+            --text-primary: #ffffff;
+            --text-secondary: #8b92b0;
+            --border-color: #2a2f4a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #0f1324 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--bg-card), var(--bg-dark));
+            border-bottom: 2px solid var(--accent-cyan);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-cyan), #0891b2);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(90deg, var(--accent-red), #dc2626);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.4);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 212, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .detection-item {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        .detection-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateX(4px);
+        }
+
+        .token-symbol {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-cyan);
+        }
+
+        /* NOUVEAUX STYLES POUR LES LIENS */
+        .token-links {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .token-links-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-yellow);
+            font-size: 0.95rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+
+        .link-section {
+            margin-bottom: 10px;
+        }
+
+        .link-section-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .link-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            margin: 3px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .link-button:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--accent-cyan);
+            transform: translateY(-1px);
+        }
+
+        .link-button.primary {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+            color: var(--accent-green);
+        }
+
+        .link-button.primary:hover {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--accent-green);
+        }
+
+        .link-button.security {
+            background: rgba(255, 211, 61, 0.1);
+            border-color: rgba(255, 211, 61, 0.3);
+            color: var(--accent-yellow);
+        }
+
+        .link-button.security:hover {
+            background: rgba(255, 211, 61, 0.2);
+            border-color: var(--accent-yellow);
+        }
+
+        .confidence-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .confidence-high {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .confidence-medium {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .confidence-low {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .risk-badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .risk-low {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .risk-medium {
+            background: var(--accent-yellow);
+            color: black;
+        }
+
+        .risk-high {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .detections-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 4px;
+        }
+
+        .connection-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ws-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .ws-indicator.disconnected {
+            background: var(--accent-red);
+            animation: none;
+        }
+
+        .security-info {
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .security-item {
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h1>🎯 RUG HUNTER BOT v5.0</h1>
+            <span style="color: var(--text-secondary);">
+                Détection temps réel avec liens directs
+            </span>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn btn-primary" id="toggleAutoTrade">
+                🤖 Auto-Trade
+            </button>
+            <button class="btn btn-danger" id="emergencyStop">
+                🚨 STOP
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- STATS -->
+        <div class="grid">
+            <div class="card">
+                <div class="stat-label">🔍 Total Scans</div>
+                <div class="stat-value" id="totalScans">0</div>
+            </div>
+            <div class="card">
+                <div class="stat-label">🎯 Tokens Détectés</div>
+                <div class="stat-value" id="totalDetections">0</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    ✅ Passés: <strong id="passedFilters">0</strong> | 
+                    🍯 Honeypots: <strong id="honeypotsBlocked">0</strong>
+                </div>
+            </div>
+            <div class="card">
+                <div class="stat-label">💹 PnL Total</div>
+                <div class="stat-value" id="totalPnL" style="color: var(--accent-green);">$0.00</div>
+            </div>
+            <div class="card">
+                <div class="stat-label">📊 Trades</div>
+                <div class="stat-value" id="totalTrades">0</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    Win Rate: <strong id="winRate">0%</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETECTIONS -->
+        <div class="card">
+            <h2 style="margin-bottom: 1rem;">🔍 Détections Récentes avec Liens Directs</h2>
+            <div class="detections-list" id="detectionsList">
+                <p style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                    En attente de détections...
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONNECTION STATUS -->
+    <div class="connection-status">
+        <div class="ws-indicator" id="wsIndicator"></div>
+        <span id="wsStatus">Connexion...</span>
+    </div>
+
+    <script>
+        let ws = null;
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/feed`;
+            
+            ws = new WebSocket(wsUrl);
+
+            ws.onopen = () => {
+                console.log('✅ WebSocket connected');
+                document.getElementById('wsStatus').textContent = 'Connecté';
+                document.getElementById('wsIndicator').classList.remove('disconnected');
+            };
+
+            ws.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                handleMessage(message);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+
+            ws.onclose = () => {
+                console.log('❌ WebSocket disconnected');
+                document.getElementById('wsStatus').textContent = 'Déconnecté';
+                document.getElementById('wsIndicator').classList.add('disconnected');
+                setTimeout(connectWebSocket, 5000);
+            };
+        }
+
+        function handleMessage(message) {
+            switch(message.type) {
+                case 'connected':
+                    console.log('Bot connected:', message.data);
+                    break;
+                
+                case 'stats_update':
+                    updateStats(message.data);
+                    break;
+                
+                case 'new_detection':
+                    addDetection(message.data);
+                    break;
+            }
+        }
+
+        function updateStats(stats) {
+            document.getElementById('totalScans').textContent = stats.total_scans?.toLocaleString() || '0';
+            document.getElementById('totalDetections').textContent = stats.total_detections?.toLocaleString() || '0';
+            document.getElementById('passedFilters').textContent = stats.passed_filters?.toLocaleString() || '0';
+            document.getElementById('honeypotsBlocked').textContent = stats.honeypots_blocked?.toLocaleString() || '0';
+            document.getElementById('totalTrades').textContent = stats.trades_executed?.toLocaleString() || '0';
+            
+            const pnl = stats.total_pnl_usd || 0;
+            const pnlEl = document.getElementById('totalPnL');
+            pnlEl.textContent = `$${pnl.toFixed(2)}`;
+            pnlEl.style.color = pnl >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+            
+            document.getElementById('winRate').textContent = `${(stats.win_rate || 0).toFixed(1)}%`;
+        }
+
+        function addDetection(detection) {
+            const list = document.getElementById('detectionsList');
+            
+            if (list.querySelector('p')) {
+                list.innerHTML = '';
+            }
+            
+            const confidenceClass = detection.reliability_score >= 75 ? 'confidence-high' : 
+                                    detection.reliability_score >= 50 ? 'confidence-medium' : 
+                                    'confidence-low';
+            
+            const riskClass = detection.risk_score < 30 ? 'risk-low' : 
+                              detection.risk_score < 60 ? 'risk-medium' : 
+                              'risk-high';
+            
+            const riskLabel = detection.risk_score < 30 ? 'LOW' : 
+                              detection.risk_score < 60 ? 'MED' : 
+                              'HIGH';
+            
+            const item = document.createElement('div');
+            item.className = 'detection-item';
+            item.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div>
+                        <span class="token-symbol">${detection.symbol}</span>
+                        <span style="color: var(--text-secondary); font-size: 0.9rem; margin-left: 8px;">
+                            ${detection.name}
+                        </span>
+                        <span style="color: var(--text-secondary); margin-left: 8px;">
+                            ${detection.chain} • ${detection.dex}
+                        </span>
+                        <span class="risk-badge ${riskClass}">RISK: ${riskLabel}</span>
+                    </div>
+                    <span class="confidence-badge ${confidenceClass}">
+                        ${detection.reliability_score}% 🎯
+                    </span>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; font-size: 0.85rem;">
+                    <div>💧 Liq: <strong>$${detection.liquidity_usd?.toLocaleString()}</strong></div>
+                    <div>💰 Prix: <strong>$${detection.price_usd?.toFixed(8)}</strong></div>
+                    <div>📊 MCap: <strong>$${detection.market_cap_usd?.toLocaleString()}</strong></div>
+                </div>
+                
+                ${generateSecurityInfo(detection)}
+                ${generateLinks(detection)}
+            `;
+            
+            list.insertBefore(item, list.firstChild);
+            
+            while (list.children.length > 50) {
+                list.removeChild(list.lastChild);
+            }
+        }
+
+        function generateSecurityInfo(detection) {
+            const issues = [];
+            if (!detection.ownership_renounced) issues.push('⚠️ Owner non renoncé');
+            if (detection.has_mint_function) issues.push('⚠️ Mint function');
+            if (detection.has_blacklist) issues.push('⚠️ Blacklist');
+            if (detection.has_proxy) issues.push('⚠️ Proxy');
+            if (detection.owner_balance_percent > 20) issues.push(`⚠️ Owner: ${detection.owner_balance_percent.toFixed(1)}%`);
+            
+            if (issues.length === 0) {
+                return '<div style="color: var(--accent-green); font-size: 0.85rem; margin: 8px 0;">✅ Aucun problème de sécurité détecté</div>';
+            }
+            
+            return `
+                <div class="security-info">
+                    ${issues.map(issue => `<div class="security-item">${issue}</div>`).join('')}
+                </div>
+            `;
+        }
+
+        function generateLinks(detection) {
+            if (!detection.links || Object.keys(detection.links).length === 0) {
+                return '';
+            }
+            
+            const links = detection.links;
+            let html = '<div class="token-links">';
+            html += '<div class="token-links-title">🔗 LIENS DIRECTS - Cliquez pour analyser:</div>';
+            
+            // Explorateurs
+            if (links.etherscan_token || links.bscscan_token || links.basescan) {
+                html += '<div class="link-section">';
+                html += '<div class="link-section-title">📊 Explorateurs</div>';
+                if (links.etherscan_token) html += `<a href="${links.etherscan_token}" target="_blank" class="link-button">🔍 Etherscan Token</a>`;
+                if (links.etherscan_pair) html += `<a href="${links.etherscan_pair}" target="_blank" class="link-button">📄 Etherscan Pair</a>`;
+                if (links.bscscan_token) html += `<a href="${links.bscscan_token}" target="_blank" class="link-button">🔍 BSCScan Token</a>`;
+                if (links.bscscan_pair) html += `<a href="${links.bscscan_pair}" target="_blank" class="link-button">📄 BSCScan Pair</a>`;
+                if (links.basescan) html += `<a href="${links.basescan}" target="_blank" class="link-button">🔍 BaseScan</a>`;
+                html += '</div>';
+            }
+            
+            // DEX
+            if (links.uniswap || links.pancakeswap) {
+                html += '<div class="link-section">';
+                html += '<div class="link-section-title">💱 Trading (Acheter)</div>';
+                if (links.uniswap) html += `<a href="${links.uniswap}" target="_blank" class="link-button primary">🦄 Uniswap</a>`;
+                if (links.pancakeswap) html += `<a href="${links.pancakeswap}" target="_blank" class="link-button primary">🥞 PancakeSwap</a>`;
+                html += '</div>';
+            }
+            
+            // Charts
+            if (links.dexscreener || links.dextools || links.poocoin) {
+                html += '<div class="link-section">';
+                html += '<div class="link-section-title">📈 Charts & Analytics</div>';
+                if (links.dexscreener) html += `<a href="${links.dexscreener}" target="_blank" class="link-button">📊 DexScreener</a>`;
+                if (links.dextools) html += `<a href="${links.dextools}" target="_blank" class="link-button">🛠️ DexTools</a>`;
+                if (links.poocoin) html += `<a href="${links.poocoin}" target="_blank" class="link-button">💩 PooCoin</a>`;
+                if (links.ave_tools) html += `<a href="${links.ave_tools}" target="_blank" class="link-button">🤖 AVE.ai</a>`;
+                html += '</div>';
+            }
+            
+            // Sécurité
+            if (links.honeypot_is || links.tokensniffer || links.rugcheck) {
+                html += '<div class="link-section">';
+                html += '<div class="link-section-title">🛡️ Vérification Sécurité</div>';
+                if (links.honeypot_is) html += `<a href="${links.honeypot_is}" target="_blank" class="link-button security">🍯 Honeypot.is</a>`;
+                if (links.tokensniffer) html += `<a href="${links.tokensniffer}" target="_blank" class="link-button security">🔐 TokenSniffer</a>`;
+                if (links.rugcheck) html += `<a href="${links.rugcheck}" target="_blank" class="link-button security">⚠️ RugCheck</a>`;
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        // Toggle auto-trade
+        document.getElementById('toggleAutoTrade').onclick = async function() {
+            try {
+                const response = await fetch('/api/settings');
+                const data = await response.json();
+                const currentState = data.settings.AUTO_TRADING_ENABLED;
+                
+                await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ AUTO_TRADING_ENABLED: !currentState })
+                });
+                
+                alert(currentState ? '❌ Auto-trading désactivé' : '✅ Auto-trading activé');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        // Emergency stop
+        document.getElementById('emergencyStop').onclick = async function() {
+            if (!confirm('⚠️ Arrêter le bot ?')) return;
+            
+            try {
+                await fetch('/api/emergency/stop', { method: 'POST' });
+                alert('🚨 Bot arrêté!');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        // Initialize
+        connectWebSocket();
+        
+        // Load initial detections
+        async function loadDetections() {
+            try {
+                const response = await fetch('/api/detections?limit=20');
+                const data = await response.json();
+                
+                if (data.detections && data.detections.length > 0) {
+                    data.detections.forEach(detection => {
+                        addDetection(detection);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading detections:', error);
+            }
+        }
+        
+        loadDetections();
+        setInterval(loadDetections, 30000);
+    </script>
+</body>
+</html>
